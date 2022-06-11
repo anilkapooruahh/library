@@ -1,9 +1,14 @@
 // DOM manipulation
 const library = document.getElementById("library-container");
-const submitButton = document.getElementById("submit-button")
-
+const submitButton = document.getElementById("submit-button");
+const form = document.querySelector('form')
 
 let myLibrary = [];
+
+
+const b1 = new Book("Philosophy 100", "Socrates", 300, false)
+
+myLibrary.push(b1)
 
 function Book(title, author, pages, read) {
   this.title = title; // String
@@ -18,42 +23,99 @@ function Book(title, author, pages, read) {
   };
 }
 
-submitButton.addEventListener("click", (event) => addBookToLibrary(event))
-submitButton.addEventListener("click", event => updateBooks(event))
+form.addEventListener("submit", (event) => addBookToLibrary(event), true);
+form.addEventListener("submit", (event) => updateBooks(event), true);
+
+function makeBookFromInput() {
+  const title = document.getElementById("title").value;
+  const author = document.getElementById("author").value;
+  const pages = document.getElementById("pages").value;
+  const read = document.getElementById("read").checked;
 
 
-const makeBookFromInput = () => {
-
-  const title = document.getElementById("title").value
-  const author = document.getElementById("author").value
-  const pages = document.getElementById("pages").value
-  const read = document.getElementById("read").checked
-
-  return new Book(title, author, pages, read)
+  return new Book(title, author, pages, read);
 }
 
 function addBookToLibrary(event) {
-  event.preventDefault()
+
   // adds book to library
-  const newBook = makeBookFromInput()
-  myLibrary.push(newBook)
-  alert(`${myLibrary.length} books in library`)
+  const newBook = makeBookFromInput();
+  myLibrary.push(newBook);
   // do stuff here
+  event.preventDefault()
 }
 
 const updateBooks = (e) => {
-  e.preventDefault()
-  library.innerText = ""
-  for (let book = 0; book < myLibrary.length; book++) {
-    makeBookCard(myLibrary[book])
-    
-  }
-} 
+  console.log(myLibrary)
 
-const makeBookCard = book => {
-  const container = document.createElement('div')
-  const title = document.createElement('p')
-  title.innerText = `title : ${book.title}`
-  container.appendChild(title)
-  library.appendChild(container)
+  library.innerText = "";
+  for (let book = 0; book < myLibrary.length; book++) {
+    makeBookCard(myLibrary[book]);
+  }
+  e.preventDefault()
+};
+
+const toggleReadStatus = (read, book, event) => {
+  read.classList.toggle('btn-red')
+  read.classList.toggle('btn-green')
+  if (book.read) {
+    book.read = false
+  } else {
+    book.read = true
+  }
+  setReadText(read)
+  event.preventDefault()
 }
+
+const setReadText = (read) => {
+  if(read.classList.contains('btn-green')) {
+    read.innerText = "read"
+  } else {
+    read.innerText = "not read yet"
+  }
+}
+
+const setReadInitialState = (read, book) => {
+  if (book.read) {
+    read.classList.add('btn-green')
+  } else {
+    read.classList.add('btn-red')
+  }
+  setReadText(read)
+  
+}
+
+const deleteBook = (event, book) => {
+  event.preventDefault()
+  myLibrary = myLibrary.filter(books => books.title !== book.title)
+  updateBooks()
+
+}
+
+const makeBookCard = (book) => {
+  const bookCard = document.createElement("div");
+  
+  const title = document.createElement("p");
+  const author = document.createElement("p");
+  const pages = document.createElement("p");
+  const read = document.createElement("button");
+  const deleteButton = document.createElement("button")
+  
+  bookCard.classList.add("book-card")
+
+  title.innerText = `title : ${book.title}`;
+  author.innerText = `author : ${book.author}`;
+  pages.innerText = `pages: ${book.pages}`;
+  setReadInitialState(read, book)
+  deleteButton.innerText = "Delete"
+  
+  read.addEventListener('click', (event) => toggleReadStatus(read ,book, event))
+  deleteButton.addEventListener('click', event => deleteBook(event, book))
+  
+  bookCard.appendChild(title);
+  bookCard.appendChild(author);
+  bookCard.appendChild(pages);
+  bookCard.appendChild(read);
+  bookCard.appendChild(deleteButton)
+  library.appendChild(bookCard);
+};
