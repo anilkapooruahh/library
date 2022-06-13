@@ -69,9 +69,12 @@ const updateBooks = (e) => {
   e.preventDefault()
 };
 
-const toggleReadStatus = (read, book, event) => {
+const toggleReadStatus = (read, book, bookCard, event) => {
+  bookCard.classList.toggle('btn-red')
+  bookCard.classList.toggle('btn-green')
   read.classList.toggle('btn-red')
   read.classList.toggle('btn-green')
+  
   if (book.read) {
     book.read = false
   } else {
@@ -89,11 +92,13 @@ const setReadText = (read) => {
   }
 }
 
-const setReadInitialState = (read, book) => {
+const setReadInitialState = (read, book, bookCard) => {
   if (book.read) {
-    read.classList.add('btn-green')
-  } else {
     read.classList.add('btn-red')
+    bookCard.classList.add('btn-green')
+  } else {
+    read.classList.add('btn-green')
+    bookCard.classList.add('btn-red')
   }
   setReadText(read)
   
@@ -109,27 +114,28 @@ const deleteBook = (event, book) => {
 const makeBookCard = (book) => {
   const bookCard = document.createElement("div");
   
-  const title = document.createElement("p");
-  const author = document.createElement("p");
-  const pages = document.createElement("p");
+  const title = document.createElement("span");
+  const author = document.createElement("span");
+  const pages = document.createElement("span");
   const read = document.createElement("button");
   const deleteButton = document.createElement("button")
   
   bookCard.classList.add("book-card")
 
-  title.innerText = `title : ${book.title}`;
-  author.innerText = `author : ${book.author}`;
-  pages.innerText = `pages: ${book.pages}`;
-  setReadInitialState(read, book)
+  title.innerText = `Title : ${book.title}`;
+  author.innerText = `Author : ${book.author}`;
+  pages.innerText = `Pages: ${book.pages}`;
+  setReadInitialState(read, book, bookCard)
   deleteButton.innerText = "Delete"
   
-  read.addEventListener('click', (event) => toggleReadStatus(read ,book, event))
+  read.addEventListener('click', (event) => toggleReadStatus(read ,book, bookCard, event))
   deleteButton.addEventListener('click', event => deleteBook(event, book))
   
   bookCard.appendChild(title);
   bookCard.appendChild(author);
   bookCard.appendChild(pages);
   bookCard.appendChild(read);
-  bookCard.appendChild(deleteButton)
+  bookCard.appendChild(deleteButton);
+
   library.appendChild(bookCard);
 };
