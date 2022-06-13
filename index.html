@@ -9,12 +9,12 @@
     <title>Document</title>
   </head>
   <body>
-    <div class="page-container">
+    <div class="page-container show">
       <h1>My Library</h1>
       <div id="library-container" class="library">
 
       </div>
-      <form id = "formElem">
+      <form class="hide" id = "formElem">
         <div class="form__element">
           <label for="title">Title</label>
           <input type="text" id="title" name="title" required />
@@ -31,8 +31,11 @@
           <label for="read">Read?</label>
           <input type="checkbox"  id="read" name="read"/>
         </div>
-        <button type="submit" id="submit-button">Add new Book</button>
+        <button type="submit" id="submit-button">Submit</button>
       </form>
+    </div>
+    <div class="button-container">
+      <button id="add-book">Add Book</button>
     </div>
 
 

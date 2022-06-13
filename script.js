@@ -2,6 +2,7 @@
 const library = document.getElementById("library-container");
 const submitButton = document.getElementById("submit-button");
 const form = document.querySelector('form')
+const addButton = document.getElementById("add-book")
 
 let myLibrary = [];
 
@@ -25,6 +26,19 @@ function Book(title, author, pages, read) {
 
 form.addEventListener("submit", (event) => addBookToLibrary(event), true);
 form.addEventListener("submit", (event) => updateBooks(event), true);
+form.addEventListener("submit", event => toggleModalVisibility(event))
+addButton.addEventListener("click", event => toggleModalVisibility(event))
+
+const toggleModalVisibility = event => {
+  event.preventDefault()
+  form.classList.toggle("hide")
+  form.classList.toggle("show")
+  library.classList.toggle("show")
+  library.classList.toggle("hide")
+  addButton.classList.toggle("hide")
+  addButton.classList.toggle("show")
+}
+
 
 function makeBookFromInput() {
   const title = document.getElementById("title").value;
