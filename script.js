@@ -7,21 +7,19 @@ const addButton = document.getElementById("add-book")
 let myLibrary = [];
 
 
-const b1 = new Book("Philosophy 100", "Socrates", 300, false)
-
-myLibrary.push(b1)
-
-function Book(title, author, pages, read) {
-  this.title = title; // String
-  this.author = author; // String
-  this.pages = pages; // Number
-  this.read = read; // Boolean
-  this.info = () => {
-    if (read) {
-      return `${this.title} by ${this.author}, ${this.pages} pages, read`;
-    }
-    return `${this.title} by ${this.author}, ${this.pages} pages, not yet read`;
-  };
+class Book {
+  constructor(title, author, pages, read) {
+    this.title = title; // String
+    this.author = author; // String
+    this.pages = pages; // Number
+    this.read = read; // Boolean
+    this.info = () => {
+      if (read) {
+        return `${this.title} by ${this.author}, ${this.pages} pages, read`;
+      }
+      return `${this.title} by ${this.author}, ${this.pages} pages, not yet read`;
+    };
+  }
 }
 
 form.addEventListener("submit", (event) => addBookToLibrary(event), true);
